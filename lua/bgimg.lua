@@ -24,4 +24,6 @@ M.hello = function()
   return module.my_first_function(M.config.opt)
 end
 
+print("hello git world.")
+
 return M
