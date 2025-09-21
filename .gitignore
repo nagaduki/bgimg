@@ -2,3 +2,4 @@ vendor/plenary.nvim
 plugin/
 log/
 backup/
+lua/init.lua
