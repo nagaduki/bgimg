@@ -9,8 +9,8 @@ local config = {
 
   -- TEST
   message = "hello git world from lua script.",
-  first_name = "yamada"
-  nick_name = "gitman"
+  first_name = "yamada",
+  nick_name = "gitman",
 }
 
 ---@class MyModule
