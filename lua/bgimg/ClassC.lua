@@ -1,4 +1,4 @@
-local Object = require("Object")
+local Object = require("bgimg/Object")
 --
 local M = {}
 --ClassC = {

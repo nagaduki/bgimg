@@ -1,11 +1,11 @@
-local ClassC = require("ClassC")
-local P = require("P")
+local ClassC = require("bgimg.ClassC")
+local P = require("bgimg.P")
 local colors = require("ansicolors")
 local logging = require("logging")
 require("logging.file")
 -- init_spec.lua
 local logger = logging.file({
-	filename = "log/test_Stringx_%s.log",
+	filename = "log/test_ClassC_%s.log",
 	datePattern = "%Y-%m-%d",
 })
 
@@ -26,5 +26,5 @@ describe("Stringx test", function()
 	end)
 end)
 
-P(colors("%{red}Stringx%{reset} test."))
-P("package.path: " .. package.path)
+P(colors("%{red}ClassC%{reset} test."))
+-- P("package.path: " .. package.path)
