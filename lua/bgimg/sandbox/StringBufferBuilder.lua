@@ -1,6 +1,7 @@
+local Object = require("bgimg/core/Object")
+local StringBuffer = require("bgimg/sandbox/StringBuffer")
+
 local logging = require("logging")
-local Object = require("bgimg/Object")
-local StringBuffer = require("bgimg/StringBuffer")
 local ansicolors = require("ansicolors")
 require("logging.file")
 -- init_spec.lua

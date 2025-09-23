@@ -1,6 +1,11 @@
-local logging = require("logging")
-local Object = require("bgimg/Object")
+-- History:
+-- version 2025/09/20 for bgimg
+
+local Object = require("bgimg/core/Object")
+
+-- For busted
 local ansicolors = require("ansicolors")
+local logging = require("logging")
 require("logging.file")
 -- init_spec.lua
 local logger = logging.file({
