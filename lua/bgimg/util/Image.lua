@@ -1,85 +1,67 @@
-local Logger = require("Logger")
-local P = require("P") -- custom print function
+local Logger = require("bgimg.util.Logger")
+local P = require("bgimg.util.P") -- custom print function
 
-Image = {
-	new = function(path)
-		Logger.Info("----- In Image new: path --------")
-		Logger.Info(path)
-		Logger.Info("---------------------------")
+-- Class Image
+M = {
+  new = function(path)
+    local obj = {}
+    local img_path = string.format("%s", path)
+    local IHDR = {}
 
-		local obj = {}
-		local img_path = string.format("%s", path)
-		local IHDR = {}
+    -- Don't work because ESCAPE
+    -- local ext = path: gsub( "^%.(.*)", "%1") :match('.*%.(.*)')
+    local ext = img_path:gsub("^%.(.*)", "%1"):match(".*%.(.*)")
 
-		Logger.Info("----- In Image new: img_path --------")
-		Logger.Info(img_path)
-		Logger.Info("---------------------------")
-		-- Don't work because ESCAPE
-		-- local ext = path: gsub( "^%.(.*)", "%1") :match('.*%.(.*)')
-		local ext = img_path:gsub("^%.(.*)", "%1"):match(".*%.(.*)")
+    img_file, err = assert(io.open(img_path, "rb"))
 
-		--[[
-		if ext ~= "png" then
-			obj.height = 0
-			obj.width  = 0
+    local block = 8
+    -- while true do
+    for i = 0, 2 do
+      local bytes = img_file:read(block)
 
-			P("----------------------------" .. ext .. "-NOT PNG FILE --------------------- ")
-			obj.type   = nil
-			return obj
-		else
-			obj.type = ext
-		end
-		]]
+      if not bytes then
+        obj.type = ""
+        break
+      end
 
-		img_file, err = assert(io.open(img_path, "rb"))
+      local j = 1
+      for b in bytes:gmatch(".") do
+        IHDR[i * block + j] = string.format("%02X", b:byte())
+        j = j + 1
+      end
+    end
+    img_file:close()
 
-		local block = 8
-		-- while true do
-		for i = 0, 2 do
-			local bytes = img_file:read(block)
+    local IHDR1 = IHDR[17]
+    local IHDR2 = IHDR[18]
+    local IHDR3 = IHDR[19]
+    local IHDR4 = IHDR[20]
+    local IHDR5 = IHDR[21]
+    local IHDR6 = IHDR[22]
+    local IHDR7 = IHDR[23]
+    local IHDR8 = IHDR[24]
 
-			if not bytes then
-				obj.type = ""
-				break
-			end
+    local height16 = string.format("%s%s%s%s", IHDR5, IHDR6, IHDR7, IHDR8)
+    local width16 = string.format("%s%s%s%s", IHDR1, IHDR2, IHDR3, IHDR4)
 
-			local j = 1
-			for b in bytes:gmatch(".") do
-				IHDR[i * block + j] = string.format("%02X", b:byte())
-				j = j + 1
-			end
-		end
-		img_file:close()
+    obj.height = tonumber(height16, 16)
+    obj.width = tonumber(width16, 16)
 
-		local IHDR1 = IHDR[17]
-		local IHDR2 = IHDR[18]
-		local IHDR3 = IHDR[19]
-		local IHDR4 = IHDR[20]
-		local IHDR5 = IHDR[21]
-		local IHDR6 = IHDR[22]
-		local IHDR7 = IHDR[23]
-		local IHDR8 = IHDR[24]
+    obj.getHeight = function(self)
+      return self.height
+    end
 
-		local height16 = string.format("%s%s%s%s", IHDR5, IHDR6, IHDR7, IHDR8)
-		local width16 = string.format("%s%s%s%s", IHDR1, IHDR2, IHDR3, IHDR4)
+    obj.getWidth = function(self)
+      return self.width
+    end
 
-		obj.height = tonumber(height16, 16)
-		obj.width = tonumber(width16, 16)
+    obj.getType = function(self)
+      return self.type
+    end
 
-		obj.getHeight = function(self)
-			return self.height
-		end
-
-		obj.getWidth = function(self)
-			return self.width
-		end
-
-		obj.getType = function(self)
-			return self.type
-		end
-
-		return obj
-	end,
+    return obj
+  end,
 }
 
-return Image
+-- Class Image
+return M
