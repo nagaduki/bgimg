@@ -10,9 +10,15 @@ M = {
     return obj
   end,
 
+  --[[
   to_string = function(self)
     return self.content
   end,
+	]]
 }
+
+function M:to_string()
+  return self.content
+end
 
 return M
