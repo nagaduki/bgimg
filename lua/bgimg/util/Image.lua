@@ -63,5 +63,29 @@ M = {
   end,
 }
 
+-- Instance method
+-- @return image height.
+function M:get_height()
+  return self.height
+end
+
+-- Instance method
+-- @return image width.
+function M:get_width()
+  return self.width
+end
+
+-- Instance method
+-- @return image type.
+function M:get_type()
+  return self.type
+end
+
+-- Instance method
+-- @return image path.
+function M:get_path()
+  return self.img_path
+end
+
 -- Class Image
 return M
