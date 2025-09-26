@@ -1,6 +1,5 @@
 -- History:
 -- version 2025/09/20 for bgimg
-
 local Object = require("bgimg/core/Object")
 
 -- For busted

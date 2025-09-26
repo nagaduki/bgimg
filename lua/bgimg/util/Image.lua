@@ -46,6 +46,7 @@ M = {
 
     obj.height = tonumber(height16, 16)
     obj.width = tonumber(width16, 16)
+    obj.ext   = ext
 
     obj.getHeight = function(self)
       return self.height
@@ -59,33 +60,25 @@ M = {
       return self.type
     end
 
+    obj.get_height = function(self)
+      return self.height
+    end
+
+    obj.get_width = function(self)
+      return self.width
+    end
+
+    obj.get_ext = function(self)
+      return self.ext
+    end
+
+    obj.get_path = function(self)
+      return self.img_path
+    end
+
     return obj
   end,
 }
-
--- Instance method
--- @return image height.
-function M:get_height()
-  return self.height
-end
-
--- Instance method
--- @return image width.
-function M:get_width()
-  return self.width
-end
-
--- Instance method
--- @return image type.
-function M:get_type()
-  return self.type
-end
-
--- Instance method
--- @return image path.
-function M:get_path()
-  return self.img_path
-end
 
 -- Class Image
 return M
