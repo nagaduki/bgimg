@@ -1,6 +1,7 @@
 -- main module file
 -- local module = require("plugin_name.module")
 local module = require("bgimg.module")
+local BackGroundManager = require("bgimg.util.BackGroundManager")
 
 ---@class Config
 ---@field opt string Your config option
@@ -28,6 +29,8 @@ M.setup = function(args)
   print(M.config.message)
   vim.api.nvim_create_user_command('HelloName', M.hello_name, {})
   vim.api.nvim_create_user_command('HelloNick', M.hello_nick, {})
+  vim.api.nvim_create_user_command('Bglight', M.set_background_hsb_brightness_light, {})
+  vim.api.nvim_create_user_command('Bgdark', M.set_background_hsb_brightness_dark, {})
 end
 
 M.hello = function()
@@ -37,9 +40,19 @@ end
 -- print("hello git world.")
 M.hello_name = function()
 	print(M.config.message .. M.config.first_name)
+	BackGroundManager.Light()
 end
 
 M.hello_nick = function()
+	print(M.config.message .. M.config.nick_name)
+	BackGroundManager.Dark()
+end
+
+M.set_background_hsb_brightness_light = function()
+	print(M.config.message .. M.config.nick_name)
+end
+
+M.set_background_hsb_brightness_dark = function()
 	print(M.config.message .. M.config.nick_name)
 end
 
