@@ -171,6 +171,18 @@ M = {
     return config.background[1].width
   end,
 
+  set_config_file = function(width)
+    local config = M.__content_table
+  end,
+
+  set_history_file = function(path)
+    M.__history_file = path
+  end,
+  
+  set_config_file = function(path)
+    M.__config_path = path
+  end,
+ 
   Zoom = function(ratio)
     local config = M.__content_table
     local source_file = string.format("%q", config.background[1].source.File)
@@ -399,7 +411,7 @@ end
 function M.zoom(ratio)
   local config = M.__content_table
   local source_file = string.format("%q", config.background[1].source.File)
-  local wsl_path = Path.Convert_wsl_path(M.__current_source_file)
+  local wsl_path = Path.convert_wsl_path(M.__current_source_file)
   local image = Image.new(wsl_path)
   config.background[1].width = math.floor(tonumber(image.width) * ratio)
   config.background[1].height = math.floor(tonumber(image.height) * ratio)
@@ -419,12 +431,12 @@ function M.set_source_file(windows_path)
   local config = M.__content_table
   local history_list = M.__history_table.list or {}
   local history_current = M.__history_table.current or 1
-  local wsl_path = Path.Convert_wsl_path(windows_path)
+  local wsl_path = Path.convert_wsl_path(windows_path)
 
   local image = Image.new(wsl_path)
   local height = image.height .. "px"
   local width = image.width .. "px"
-  local type = image.type
+  local ext = image.ext
 
   config.background[1].height = height
   config.background[1].width = width
@@ -432,13 +444,11 @@ function M.set_source_file(windows_path)
   M.__current_source_file = windows_path
   if history_current > 1 then
     for i = 1, history_current - 1 do
-      P(" remove table list : " .. i)
       table.remove(history_list, i)
     end
   end
   M.__history_table.current = 1
-  M.Add_history(windows_path)
-  Logger.Info(history_list)
+  M.add_history(windows_path)
 end
 
 -- set wezterm config source file
@@ -448,12 +458,12 @@ function M.set_source_file(windows_path)
   local config = M.__content_table
   local history_list = M.__history_table.list or {}
   local history_current = M.__history_table.current or 1
-  local wsl_path = Path.Convert_wsl_path(windows_path)
+  local wsl_path = Path.convert_wsl_path(windows_path)
 
   local image = Image.new(wsl_path)
   local height = image.height .. "px"
   local width = image.width .. "px"
-  local type = image.type
+  local ext = image.ext
 
   config.background[1].height = height
   config.background[1].width = width
@@ -465,11 +475,10 @@ function M.set_source_file(windows_path)
       table.remove(history_list, i)
     end
   end
-
   M.__history_table.current = 1
-  M.Add_history(windows_path)
-  Logger.Info(history_list)
+  M.add_history(windows_path)
 end
+
 -- get wezterm config source file
 -- @param   void
 -- @return  path windows path
@@ -478,7 +487,6 @@ function M.get_source_file()
     return nil
   end
   local config = M.__content_table
-  Logger.Info(self)
   return config.background[1].source.File
 end
 
@@ -506,21 +514,18 @@ function M.load()
 end
 
 function M.dump()
-  Logger.Info(M.__content_table)
+  -- Logger.Info(M.__content_table)
 end
 
 -- saving wezterm config background.lua";
 -- @param   void
 -- @return  void
 function M.save()
-  -- local data = dofile( M.__config_path )
   local config = M.__content_table
   local serialized_data
 
-  -- return dump_table ( data, "" );
   serialized_data = M.__dump_table(config, "")
 
-  -- update config file
   local content_root = "config"
 
   local update_file, err = assert(io.open(M.__config_path, "w"))
@@ -542,7 +547,6 @@ function M.save()
 end
 
 function M.flush()
-  -- local data = dofile( M.__config_path )
   local config = M.__content_table
   local history = M.__history_table
   local serialized_content = M.__dump_table(config, "")
@@ -570,7 +574,6 @@ end
 
 M.__dump_table = function(t, indent)
   if type(t) ~= "table" then
-    -- return tostring ( data );
     return tostring(t)
   end
 
@@ -579,18 +582,12 @@ M.__dump_table = function(t, indent)
     if type(v) == "table" then
       if type(k) == "number" then
         str = string.format("%s%s%s%s,\n", str, indent, "\t", M.__dump_table(v, indent .. "\t"))
-        --P( "--- table: " .. k .. type( k ) .. "---" )
       else
         str = string.format("%s%s%s%s=%s,\n", str, indent, "\t", tostring(k), M.__dump_table(v, indent .. "\t"))
       end
     elseif type(v) == "string" then
-      P("--- string:_" .. k .. "_:_" .. type(k) .. "_:_" .. v .. "---")
-      --str = string.format("%s%s%s%s=%q,\n",str,indent,"\t",tostring(k),v);
-
       if type(k) == "number" then
-        -- str = string.format("%s%s%s%s,\n",str,indent,"\t",M.__dump_table(v,indent.."\t"));
         str = string.format("%s%s%s%q,\n", str, indent, "\t", v)
-        --P( k .. type( k ) )
       else
         str = string.format("%s%s%s%s=%q,\n", str, indent, "\t", tostring(k), M.__dump_table(v, indent .. "\t"))
       end
