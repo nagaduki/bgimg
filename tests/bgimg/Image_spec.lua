@@ -40,6 +40,28 @@ describe("image size test", function()
 
       assert.is_equal(ext, "png")
     end)
+    it("'img2.png' height '628'", function()
+      local path = "/home/aug/Projects/git/bgimg/tests/bgimg/img2.png"
+      local img = Image.new(path)
+      local height = img:get_height()
+
+      -- logger:info("content: " .. c:to_string())
+      assert.is_equal(height, 628)
+    end)
+    it("'img2.png' width '747'", function()
+      local path = "/home/aug/Projects/git/bgimg/tests/bgimg/img2.png"
+      local img = ImageBuilder.of_default():with_path(path):build()
+      local width = img:get_width()
+
+      assert.is_equal(width, 747)
+    end)
+    it("'img2.png' type 'png'", function()
+      local path = "/home/aug/Projects/git/bgimg/tests/bgimg/img2.png"
+      local img = ImageBuilder.of_default():with_path(path):build()
+      local ext = img:get_ext()
+
+      assert.is_equal(ext, "png")
+    end)
   end)
 end)
 
