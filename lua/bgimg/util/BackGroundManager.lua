@@ -371,7 +371,6 @@ function M.back_history()
   end
   M.__history_table.current = history_current + 1
   M.__current_source_file = history_list[history_current]
-  Logger.Info(M.__history_table)
 end
 
 function M.forward_history()

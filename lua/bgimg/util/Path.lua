@@ -78,8 +78,8 @@ function M.copy(path1, path2)
   output_file:close()
 end
 
-function M.convert_windows_path(unix_path)
-  local windows_path = unix_path:gsub("/", "\\\\"):gsub("\\\\mnt", "C:"):gsub("\\c\\", "")
+function M.convert_windows_path(wsl_path)
+  local windows_path = wsl_path:gsub("/", "\\\\"):gsub("\\\\mnt", "C:"):gsub("\\c\\", "")
   return windows_path
 end
 
