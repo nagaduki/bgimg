@@ -438,7 +438,6 @@ function M.set_source_file(windows_path)
   end
   M.__history_table.current = 1
   M.Add_history(windows_path)
-  Logger.Info(history_list)
 end
 
 -- set wezterm config source file
@@ -468,7 +467,6 @@ function M.set_source_file(windows_path)
 
   M.__history_table.current = 1
   M.Add_history(windows_path)
-  Logger.Info(history_list)
 end
 -- get wezterm config source file
 -- @param   void
@@ -579,23 +577,16 @@ M.__dump_table = function(t, indent)
     if type(v) == "table" then
       if type(k) == "number" then
         str = string.format("%s%s%s%s,\n", str, indent, "\t", M.__dump_table(v, indent .. "\t"))
-        --P( "--- table: " .. k .. type( k ) .. "---" )
       else
         str = string.format("%s%s%s%s=%s,\n", str, indent, "\t", tostring(k), M.__dump_table(v, indent .. "\t"))
       end
     elseif type(v) == "string" then
-      P("--- string:_" .. k .. "_:_" .. type(k) .. "_:_" .. v .. "---")
-      --str = string.format("%s%s%s%s=%q,\n",str,indent,"\t",tostring(k),v);
-
       if type(k) == "number" then
-        -- str = string.format("%s%s%s%s,\n",str,indent,"\t",M.__dump_table(v,indent.."\t"));
         str = string.format("%s%s%s%q,\n", str, indent, "\t", v)
-        --P( k .. type( k ) )
       else
         str = string.format("%s%s%s%s=%q,\n", str, indent, "\t", tostring(k), M.__dump_table(v, indent .. "\t"))
       end
     elseif type(k) == "number" then
-      -- P( k )
       str = string.format("%s%s%s%s,\n", str, indent, "\t", M.__dump_table(v, indent .. "\t"))
     else
       str = string.format("%s%s%s%s=%s,\n", str, indent, "\t", tostring(k), tostring(v))
