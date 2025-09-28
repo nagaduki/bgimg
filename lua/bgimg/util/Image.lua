@@ -48,20 +48,6 @@ M = {
     obj.width = tonumber(width16, 16)
     obj.ext = ext
 
-    --[[
-    obj.getHeight = function(self)
-      return self.height
-    end
-
-    obj.getWidth = function(self)
-      return self.width
-    end
-
-    obj.getType = function(self)
-      return self.type
-    end
-		--]]
-
     obj.get_height = function(self)
       return self.height
     end

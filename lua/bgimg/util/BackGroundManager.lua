@@ -178,11 +178,11 @@ M = {
   set_history_file = function(path)
     M.__history_file = path
   end,
-  
+
   set_config_file = function(path)
     M.__config_path = path
   end,
- 
+
   Zoom = function(ratio)
     local config = M.__content_table
     local source_file = string.format("%q", config.background[1].source.File)
@@ -591,7 +591,6 @@ M.__dump_table = function(t, indent)
         str = string.format("%s%s%s%s=%q,\n", str, indent, "\t", tostring(k), M.__dump_table(v, indent .. "\t"))
       end
     elseif type(k) == "number" then
-      -- P( k )
       str = string.format("%s%s%s%s,\n", str, indent, "\t", M.__dump_table(v, indent .. "\t"))
     else
       str = string.format("%s%s%s%s=%s,\n", str, indent, "\t", tostring(k), tostring(v))

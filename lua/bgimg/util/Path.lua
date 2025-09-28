@@ -4,16 +4,6 @@ local Logger = require("bgimg.util.Logger")
 local M = {}
 
 M = {
-  --[[
-	new = function(...)
-		-- Logger.Debug ( ... )
-		-- Logger.Info ( ... )
-		local obj = {}
-		obj.Copy = M.Copy
-		return obj
-	end,
-	]]
-
   Exists = function(path)
     local file = io.open(path, "rb")
 
