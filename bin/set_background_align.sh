@@ -16,18 +16,18 @@ if [ "$1" == "" ]; then
 fi
 
 case ${ALIGN} in
-  "Top")
-		lua -l init set_background_vertical_align.lua ${ALIGN};; 
-  "Bottom")
-		lua -l init set_background_vertical_align.lua ${ALIGN};;
-  "Middle")
-		lua -l init set_background_vertical_align.lua ${ALIGN};;
-  "Left")
-		lua -l init set_background_horizontal_align.lua ${ALIGN};;
-  "Right")
-		lua -l init set_background_horizontal_align.lua ${ALIGN};;
-  "Center")
-		lua -l init set_background_horizontal_align.lua ${ALIGN};;
+  "Top"|"top"|"t")
+		lua -l init set_background_vertical_align.lua Top;; 
+  "Bottom"|"bottom"|"b")
+		lua -l init set_background_vertical_align.lua Bottom;;
+  "Middle"|"middle"|"m")
+		lua -l init set_background_vertical_align.lua Middle;;
+  "Left"|"left"|"l")
+		lua -l init set_background_horizontal_align.lua Left;;
+  "Right"|"right"|"r")
+		lua -l init set_background_horizontal_align.lua Right;;
+  "Center"|"center"|"c")
+		lua -l init set_background_horizontal_align.lua Center;;
   *)
 		lua -l init set_background_vertical_align.lua "Middle"
 		lua -l init set_background_horizontal_align.lua "Center"
