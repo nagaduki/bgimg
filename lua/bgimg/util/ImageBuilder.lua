@@ -27,12 +27,10 @@ local function Now()
 end
 
 local function sleep(second)
-	local start = os.time()
-	while os.time() - start < second do
-	end
+  local start = os.time()
+  while os.time() - start < second do
+  end
 end
-
-
 
 -- Class: TemplateBuilder
 local M = {}
@@ -64,7 +62,7 @@ function M:build()
 end
 
 function M:with_path(str)
-  logger:info(Now() .. " builder.with_path " .. "'" .. str .. "'")
+  -- logger:info(Now() .. " builder.with_path " .. "'" .. str .. "'")
   self.img_path = str
   return self
 end

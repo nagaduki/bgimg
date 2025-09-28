@@ -183,6 +183,7 @@ M = {
     M.__config_path = path
   end,
 
+  --[[
   Zoom = function(ratio)
     local config = M.__content_table
     local source_file = string.format("%q", config.background[1].source.File)
@@ -272,6 +273,7 @@ M = {
       M.__history_table = nil
     end
   end,
+	
 
   -- get wezterm config source file
   -- @param   void
@@ -352,6 +354,7 @@ M = {
     end
     M.Flush_history(M.__history_file)
   end,
+	]]
 }
 
 function M.add_history(windows_path)

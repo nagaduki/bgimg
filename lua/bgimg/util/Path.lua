@@ -4,6 +4,7 @@ local Logger = require("bgimg.util.Logger")
 local M = {}
 
 M = {
+  --[[
   Exists = function(path)
     local file = io.open(path, "rb")
 
@@ -49,6 +50,7 @@ M = {
     end
     input_file:close()
   end,
+	]]
 }
 
 function M.exit(path)
