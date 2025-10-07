@@ -3,55 +3,7 @@ local Logger = require("bgimg.util.Logger")
 
 local M = {}
 
-M = {
-  --[[
-  Exists = function(path)
-    local file = io.open(path, "rb")
-
-    if file then
-      file:close()
-      return true
-    end
-
-    return false
-  end,
-
-  Copy = function(path1, path2)
-    local logger = Logger.new("PATH_TEST")
-    logger:info("copy function: " .. path1 .. " : " .. path2)
-    -- file, err = assert ( io.open ( log_file, "a+" ) )
-    local input_file, input_err = assert(io.open(path1, "r"))
-    local output_file, output_err = assert(io.open(path2, "w"))
-    output_file:write(input_file:read("*all"))
-    input_file:close()
-    output_file:close()
-  end,
-
-  Convert_windows_path = function(unix_path)
-    local windows_path = unix_path:gsub("/", "\\\\"):gsub("\\\\mnt", "C:"):gsub("\\c\\", "")
-
-    return windows_path
-  end,
-
-  Convert_wsl_path = function(windows_path)
-    local wsl_path = windows_path:gsub("C:\\", "/mnt/c/"):gsub("\\", "/"):gsub("//", "/")
-    -- Logger .Info( "windows path: " .. windows_path )
-    -- Logger .Info( "    wsl path: " .. wsl_path )
-    return wsl_path
-  end,
-
-  Get_choices = function(windows_path)
-    Logger.Info(windows_path)
-    local input_file, input_err = assert(io.open(windows_path, "r"))
-    if input_file then
-      print(input_file:read("*a"))
-    else
-      print("failed to read")
-    end
-    input_file:close()
-  end,
-	]]
-}
+M = {}
 
 function M.exit(path)
   local file = io.open(path, "rb")
@@ -78,6 +30,14 @@ end
 function M.convert_wsl_path(windows_path)
   local wsl_path = windows_path:gsub("C:\\", "/mnt/c/"):gsub("\\", "/"):gsub("//", "/")
   return wsl_path
+end
+
+function M.change_ext(path, new_ext)
+  -- automatically getnerate text_path and set to M.text.path.
+  local ext = path:gsub("^%.(.*)", "%1"):match(".*%.(.*)")
+  local dot_path = string.gsub(path, ext, "")
+  local new_path = dot_path .. new_ext
+  return new_path
 end
 
 -- lua cant read dir.

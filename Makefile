@@ -1,11 +1,23 @@
-TESTS_INIT=tests/minimal_init.lua
-TESTS_DIR=tests/
+# var
+HOME:=/mnt/c/Users/August
+ONEDRIVE:=/mnt/c/Users/August/OneDrive/Dev
+CLASSFILES=Image BackGroundManager Path Logger P 
+DEBUGFILES=imagedebug pathdebug backgrounddebug classdebug
+TIMESTAMP=$(shell date "+%Y%m%d_%H%M_%S")
 
-.PHONY: test
+# base
+.PHONY: clean build run deploy clean
 
-test:
-	@nvim \
-		--headless \
-		--noplugin \
-		-u ${TESTS_INIT} \
-		-c "PlenaryBustedDirectory ${TESTS_DIR} { minimal_init = '${TESTS_INIT}' }"
+## backup
+.PHONY: backup
+# backup: lua/bgimg/util/*.lua
+backup: 
+define BACKUP
+lua/bgimg/util/$(1).lua: 
+	@cp lua/bgimg/util/$(1).lua $(ONEDRIVE)/backup/$(1).lua.backup.$(TIMESTAMP)
+	@echo $(1).lua is backuped in onedrive.
+endef
+$(foreach CLASS, $(CLASSFILES),$(eval $(call BACKUP,$(CLASS))))
+# $(foreach DEBUG, $(DEBUGFILES),$(eval $(call BACKUP,$(DEBUG))))
+
+

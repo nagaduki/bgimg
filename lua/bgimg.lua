@@ -1,7 +1,12 @@
 -- main module file
 -- local module = require("plugin_name.module")
-local module = require("bgimg.module")
+-- local module = require("bgimg.module")
 local BackGroundManager = require("bgimg.util.BackGroundManager")
+local OCR = require("bgimg.util.OCR")
+local Path = require("bgimg.util.Path")
+local Widget = require("bgimg.util.Widget")
+local Table = require("bgimg.core.Table")
+local widget = require("bgimg.widget")
 
 ---@class Config
 ---@field opt string Your config option
@@ -43,6 +48,8 @@ M.setup = function(args)
   vim.api.nvim_create_user_command("Bgbottom", M.set_background_vertical_align_bottom, {})
   vim.api.nvim_create_user_command("Bgmiddle", M.set_background_vertical_align_middle, {})
   vim.api.nvim_create_user_command("Bgconfig", M.print_config, {})
+  vim.api.nvim_create_user_command("Bgocr", M.ocr, {})
+  vim.api.nvim_create_user_command("Bgstatus", M.print_status, {})
 end
 
 M.hello = function()
@@ -118,6 +125,118 @@ M.set_background_vertical_align_middle = function()
   BackGroundManager.load()
   BackGroundManager.set_vertical_align("Middle")
   BackGroundManager.flush()
+end
+
+M.print_status = function()
+  print("windows status.")
+  print("columns: " .. vim.api.nvim_get_option("columns"))
+  print("liness: " .. vim.api.nvim_get_option("lines"))
+end
+
+M.ocr = function()
+  --
+  BackGroundManager.load()
+  local source_file = BackGroundManager.get_source_file()
+  local wsl_path = Path.convert_wsl_path(source_file)
+  local text_path = Path.change_ext(wsl_path, "txt")
+
+  OCR.set_image_path(wsl_path)
+
+  if not Path.exit(text_path) then
+    OCR.convert_to_file(text_path)
+  end
+
+  local lines_table = Table.create_lines(text_path)
+
+  local win_width = math.floor(vim.api.nvim_get_option("columns") * 4 / 5)
+  local wrap_count = widget.lines.wrap_count(lines_table, win_width)
+  local win_height = math.min(#lines_table, math.floor(vim.api.nvim_get_option("lines") * 4 / 5)) + wrap_count
+
+  -- print("wrap count: " .. wrap_count)
+  -- print("width: " .. win_width)
+  -- print("height: " .. win_height)
+
+  -- widget.string.width("ABC")
+
+  local opts = {
+    title = { { text_path, "InputFloatTitle" } },
+    title_pos = "center",
+    relative = "editor", -- Position relative to the editor
+    --[[
+    width = 50,
+    height = 30,
+		]]
+    width = win_width,
+    height = win_height,
+    -- height = math.min(#lines_table, math.floor(vim.api.nvim_get_option("lines") * 4 / 5)) + 5,
+    -- height = math.min(#lines_table, math.floor(vim.api.nvim_get_option("lines") * 4 / 5)) + 5,
+
+    --[[
+    row = math.floor((vim.api.nvim_get_option("lines") - 10) / 2), -- Center vertically
+    col = math.floor((vim.api.nvim_get_option("columns") - 10) / 2), -- Center horizontally
+		]]
+    row = 2, -- Center vertically
+    col = math.floor(vim.api.nvim_get_option("columns") * 1 / 10), -- Center horizontally
+    border = "rounded", -- Optional: "single", "double", "rounded", "solid", "none"
+    -- style = "minimal", -- Optional: "minimal" for no statusline/tabline
+    focusable = true,
+    zindex = 100, -- Bring the window to the front
+  }
+
+  local window_id, buffer
+  if win_height == 0 then
+    -- Todo. error window
+    print("error: check network, and remove empty file.")
+  else
+    window_id, buffer = Widget.floating_window(text_path, opts)
+  end
+  -- vim.api.nvim_buf_set_name(buffer, text_path)
+
+  -- dont work
+  -- vim.api.nvim_buf_set_name(buffer, text_path)
+  -- vim.api.nvim_buf_set_option(buffer, "bufname", text_path)
+  -- vim.keymap.set("c", "w", "<cmd>w " .. text_path .. "<cr>", { buffer = buffer, silent = true })
+  --[[ --
+  vim.keymap.set(
+    "c",
+    "w",
+    "<cmd>write! " .. text_path .. "<cr><cmd>quit<cr>",
+    { buffer = buffer, silent = true, noremap = true }
+  )
+	--]]
+  vim.api.nvim_buf_set_lines(buffer, 0, -1, false, lines_table)
+  -- vim.api.nvim_buf_call(buffer, vim.cmd.edit)
+
+  local buffer_exist = false
+  for num, buf in ipairs(vim.api.nvim_list_bufs()) do
+    local name = vim.api.nvim_buf_get_name(buf)
+    -- print("name:" .. name)
+    if vim.api.nvim_buf_get_name(buf) == text_path then
+      -- buffer = buf
+      -- table.insert(buffers_to_keep, buf)
+      -- vim.api.nvim_buf_call(buf, vim.cmd.edit)
+      -- local name = vim.api.nvim_buf_get_option(buf, "name")
+      -- print("name:" .. name)
+      -- print("num: " .. num)
+      -- print("buf: " .. buf)
+      buffer_exist = true
+      -- pcall(vim.api.nvim_buf_delete, buf, { force = false })
+      pcall(vim.api.nvim_buf_delete, buf, { force = true })
+    end
+  end
+
+  if not buffer_exist then
+    print("buffer has no name. set " .. text_path)
+    print("nvim_buf_get_name: " .. vim.api.nvim_buf_get_name(buffer))
+    vim.api.nvim_buf_set_name(buffer, text_path)
+  else
+    print("nvim_buf_get_name: " .. vim.api.nvim_buf_get_name(buffer))
+    -- vim.api.nvim_buf_set_name(buffer, text_path)
+  end
+
+  -- vim.keymap.set("c", "q", "<cmd>q!<cr>", { buffer = buffer, silent = true, noremap = true })
+
+  -- vim.api.nvim_buf_del_mark(buffer, ".")
 end
 
 return M

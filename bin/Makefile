@@ -19,4 +19,9 @@ deploy:
 	@cp set_background_image.lua ~/bin/
 	@cp set_background_zoom.lua ~/bin/
 	@cp init.lua ~/bin/
+	@cp ocr-check.sh ~/bin/
+	@cp ocr-gdrive.py ~/bin/
+	@cp add-utf8-bom.sh ~/bin/
+	@cp has-utf8-bom.sh ~/bin/
+	@cp remove-utf8-bom.sh ~/bin/
 

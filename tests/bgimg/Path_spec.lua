@@ -43,4 +43,14 @@ describe("copy test", function()
       assert.are.same(wsl_path, converted_path)
     end)
   end)
+
+  describe("change ext", function()
+    it("c:drive path convert wsl path", function()
+      local old_path = "/mnt/c/share/Documents/img.png"
+      local new_path = "/mnt/c/share/Documents/img.txt"
+
+      local changed_path = Path.change_ext(old_path, "txt")
+      assert.are.same(new_path, changed_path)
+    end)
+  end)
 end)

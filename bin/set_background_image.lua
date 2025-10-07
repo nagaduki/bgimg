@@ -31,7 +31,7 @@ P("wezterm background image: " .. image_path)
 
 local windows_path = Path.convert_windows_path(image_path)
 
-BackGroundManager.Load()
+BackGroundManager.load()
 BackGroundManager.set_source_file(windows_path)
 BackGroundManager.dark()
 BackGroundManager.set_vertical_align("Middle")

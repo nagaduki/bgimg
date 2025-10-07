@@ -12,7 +12,7 @@ DIR_NAME=$(/usr/bin/dirname ${FILE%.*})
 logger -p user.debug "FILE_NAME: ${FILE_NAME}, DIR_NAME: ${DIR_NAME}"
 
 # 1:
-# EXT CHECH
+# EXT CHECK
 EXT_LOWER=$(echo "${EXT}" | tr '[:upper:]' '[:lower:]')
 
 if [ "${EXT_LOWER}" != "png" ]; then

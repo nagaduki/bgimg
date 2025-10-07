@@ -28,7 +28,7 @@ end
 local mag_rate = arg[1]
 P("wezterm background mag rate: " .. tostring(mag_rate))
 
-BackGroundManager.Load()
+BackGroundManager.load()
 --Logger.Info(BackGroundManager.Get_content())
 BackGroundManager.Zoom(mag_rate)
 BackGroundManager.Dark()

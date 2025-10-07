@@ -81,6 +81,7 @@ M = {
   end,
 
   -- for debug
+  --[[
   Get_content = function()
     return M.__content_table
   end,
@@ -124,7 +125,7 @@ M = {
     local config = M.__content_table
     return config.background[1].width
   end,
-
+--]]
   ----
 
   get_content = function()
@@ -171,9 +172,11 @@ M = {
     return config.background[1].width
   end,
 
+  --[[
   set_config_file = function(width)
     local config = M.__content_table
   end,
+]]
 
   set_history_file = function(path)
     M.__history_file = path
