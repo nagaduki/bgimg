@@ -134,6 +134,7 @@ M = {
       -- vim.api.nvim_buf_set_name(buffer, text_path)
     end
 
+    vim.api.nvim_buf_set_option(buffer, "filetype", "python")
     -- vim.api.nvim_buf_del_mark(buf, ".")
 
     --vim.api.nvim_del_mark(buffer, )

@@ -230,6 +230,7 @@ M.ocr = function()
     -- print("nvim_buf_get_name: " .. vim.api.nvim_buf_get_name(buffer))
     vim.api.nvim_buf_set_name(buffer, text_path)
   else
+    vim.api.nvim_buf_set_name(buffer, text_path)
     -- print("nvim_buf_get_name: " .. vim.api.nvim_buf_get_name(buffer))
     -- vim.api.nvim_buf_set_name(buffer, text_path)
   end
