@@ -226,11 +226,11 @@ M.ocr = function()
   end
 
   if not buffer_exist then
-    print("buffer has no name. set " .. text_path)
-    print("nvim_buf_get_name: " .. vim.api.nvim_buf_get_name(buffer))
+    -- print("buffer has no name. set " .. text_path)
+    -- print("nvim_buf_get_name: " .. vim.api.nvim_buf_get_name(buffer))
     vim.api.nvim_buf_set_name(buffer, text_path)
   else
-    print("nvim_buf_get_name: " .. vim.api.nvim_buf_get_name(buffer))
+    -- print("nvim_buf_get_name: " .. vim.api.nvim_buf_get_name(buffer))
     -- vim.api.nvim_buf_set_name(buffer, text_path)
   end
 
